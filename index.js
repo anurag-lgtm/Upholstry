@@ -46,7 +46,7 @@ try{
   res.send("ok");
 }
 catch(err){
-  //console.log(err,"err");
+  console.log(err,"err");
   res.send("ok");
 }
 });
