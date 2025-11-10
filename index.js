@@ -20,7 +20,8 @@ const {
 } = require("./Services/mondayService");
 const { parseCsvFromUrl } = require("./ParseCsv");
 const { SubItemController } = require("./Controller/subItemController");
-
+const { GRNController } = require("./Controller/GRNController");
+const { StatusChangeController } = require("./Controller/StatusChangeController");
 const app = express();
 
 app.use(express.json());
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
   console.log("TestHomeEndpoint");
   res.send("ok");
 });
+//To create subitems in new procurement manager board
 app.post("/subItemCreation", async (req, res) => {
   const { itemId, boardId, columnId } = req.body.payload.inputFields;
   console.log(itemId, boardId, "itemId,boardId");
@@ -39,7 +41,32 @@ app.post("/subItemCreation", async (req, res) => {
     console.log(err, "err");
   }
 });
+
+//To chnage stuatus of subitem based on item statis change
+app.post("/changeStatus", async (req, res) => {
+  const { itemId } = req.body.payload.inputFields;
+  console.log(itemId,"itemId");
+  // res.send("ok")
+  try {
+    await StatusChangeController(req, res);
+  } catch (err) {
+    console.log(err, "err");
+  }
+});
+
+//To create item in GRN board on satatus change in PO Tracker
 app.post("/GRN", async (req, res) => {
+  const { itemId } = req.body.payload.inputFields;
+  console.log(itemId,"itemId");
+  // res.send("ok")
+  try {
+    await GRNController(req, res);
+  } catch (err) {
+    console.log(err, "err");
+  }
+});
+
+/*app.post("/GRN", async (req, res) => {
   try {
     console.log("GRNRNRRR")
     const { itemId, boardId } = req.body.payload.inputFields;
@@ -118,7 +145,7 @@ app.post("/GRN", async (req, res) => {
     console.log(err, "err");
     res.send("ok");
   }
-});
+});*/
 app.post("/linkBack", async (req, res) => {
 try{
     const { itemId, boardId } = req.body.payload.inputFields;

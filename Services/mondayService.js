@@ -35,7 +35,7 @@ async function getConnectedBoardName(itemId, columnId) {
  
   try {
     const res = await mondayClient.api(query);
-    console.log(query, "qwue");
+    //console.log(query, "qwue");
  
     return {
       Supplier: res?.data?.items[0]?.column_values[0]?.display_value,
@@ -65,12 +65,12 @@ async function changeColumnValue(boardId, itemId, columnId, value) {
       }
     }
   `;
-  console.log(query, "query");
+  //console.log(query, "query");
  
   try {
     const response = await mondayClient.api(query);
  
-    console.log("✅ Updated:", response.data.change_column_value);
+    //console.log("✅ Updated:", response.data.change_column_value);
     return response.data.change_column_value;
   } catch (err) {
     console.error(
@@ -100,7 +100,7 @@ async function createItem(boardId, groupId, columnValues = {}, itemName) {
       }
     }
   `;
-  console.log(query, "query");
+  //console.log(query, "query");
   let retries = 5;
   let delay = 1000;
  
@@ -112,7 +112,7 @@ async function createItem(boardId, groupId, columnValues = {}, itemName) {
       return res.data;
     } catch (err) {
       if (err.response && err.response.status === 429) {
-        console.log(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+        //console.log(`Rate limit hit. Retrying in ${delay / 1000}s...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
         delay *= 2; // exponential backoff
         retries--;
@@ -145,10 +145,10 @@ async function generateBoard(name) {
       }
     }
   `;
-  console.log(query, "query");
+  //console.log(query, "query");
   const response = await mondayClient.api(query);
  
-  console.log("✅ Updated:", response?.data);
+  //console.log("✅ Updated:", response?.data);
   return response.data.create_board.id;
 }
 async function createSubitemMutation(itemId, subitemName, s={}) {
@@ -156,7 +156,7 @@ async function createSubitemMutation(itemId, subitemName, s={}) {
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
  
-  console.log(itemId, "asd",JSON.stringify(s));
+  //console.log(itemId, "asd",JSON.stringify(s));
   const mutation = `
     mutation {
       create_subitem (
@@ -171,7 +171,7 @@ async function createSubitemMutation(itemId, subitemName, s={}) {
     }
   `;
   const d = await mondayClient.api(mutation);
-  console.log(d, "ddddd", mutation, "sad");
+  //console.log(d, "ddddd", mutation, "sad");
  
   return d;
 }
@@ -201,7 +201,7 @@ const LinkConnectedColumnThroughId = async (
 `;
 
     const response = await monday.api(query);
-    console.log(query, "qryeu");
+    //console.log(query, "qryeu");
     return response.data;
   } catch (err) {
     console.error("Error getting user metadata:", err);
@@ -227,14 +227,14 @@ id
   `;
  
   const d = await mondayClient.api(mutation);
-  console.log(d?.data.items_page_by_column_values.items[0].id,"d?.data?.items_page_by_column_values[0]?.items[0]?.",mutation)
+  //console.log(d?.data.items_page_by_column_values.items[0].id,"d?.data?.items_page_by_column_values[0]?.items[0]?.",mutation)
   const muitation2=`mutation {
   delete_item(item_id: "${d?.data?.items_page_by_column_values?.items[0]?.id}") {
     id
   }
 }`
   const dd=await mondayClient.api(muitation2)
-  console.log(dd, "ddddd", mutation, "sad");
+  //console.log(dd, "ddddd", mutation, "sad");
  
   return d.data.items_page_by_column_values.items[0];
 }
@@ -254,12 +254,12 @@ async function changeColumnValue(boardId, itemId, columnId, value) {
       }
     }
   `;
-  console.log(query, "query");
+  //console.log(query, "query");
  
   try {
     const response = await mondayClient.api(query);
  
-    console.log("✅ Updated:", response.data.change_column_value);
+    //console.log("✅ Updated:", response.data.change_column_value);
     return response.data.change_column_value;
   } catch (err) {
     console.error(
@@ -285,12 +285,12 @@ async function changeLinkColumn(boardId, itemId, columnId, name,currBoardId) {
   }
 }
   `;
-  console.log(query, "Link change query");
+  //console.log(query, "Link change query");
  
   try {
     const response = await mondayClient.api(query);
  
-    console.log("✅ Updated:", response.data.change_column_value);
+    //console.log("✅ Updated:", response.data.change_column_value);
     return response.data.change_column_value;
   } catch (err) {
     console.error(
@@ -323,9 +323,9 @@ async function getSubitemWithParent(subitemId) {
       }
     }
   `;
-  console.log(query, "qweru");
+  //console.log(query, "qweru");
   const res = await mondayClient.api(query);
-  console.log(res.data.items[0]);
+  //console.log(res.data.items[0]);
  
   return res.data.items[0];
 }
@@ -345,10 +345,10 @@ async function getFileUrl(ITEM_ID, FILE_COLUMN_ID) {
         }
       }
     }`;
-  console.log(query, "uery");
+  //console.log(query, "uery");
  
   const res = await mondayClient.api(query);
-  console.log(res.data.items[0], "asd");
+  //console.log(res.data.items[0], "asd");
  
   const value = JSON.parse(res.data.items[0].column_values[0].value);
   let name = res?.data.items[0]?.name;
@@ -380,7 +380,7 @@ async function createGroup(groupName, boardId) {
     }
   `;
   const res = await mondayClient.api(mutation);
-  console.log(res, "res");
+  //console.log(res, "res");
  
   return res.data.create_group.id;
 }
@@ -413,9 +413,9 @@ const getSubitemDetails = async (subitemId, connectedColumnId) => {
             }
         }`;
  
-    console.log("Query", query);
+    //console.log("Query", query);
     const res = await mondayClient.api(query);
-    console.log(res, "res");
+    //console.log(res, "res");
     return res.data.items[0];
   } catch (err) {
     console.error("Error in getSubitemDetails:", err);
@@ -425,94 +425,102 @@ async function createItemProcurement(boardId, itemName) {
   mondayClient.setToken(
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
- 
+
   const query = `
-    mutation  {
+    mutation {
       create_item (
         board_id: ${boardId},
-        item_name: "${itemName}",
+        item_name: "${itemName}"
       ) {
         id
       }
     }
   `;
-  console.log(query, "query");
+
   let retries = 5;
   let delay = 1000;
- 
+
   while (retries > 0) {
     try {
       const res = await mondayClient.api(query);
- 
-      // console.log(res,"RED")
-      return res.data;
+      const itemId = res?.data?.create_item?.id;
+
+      if (!itemId) {
+        console.error("❌ create_item failed — no ID returned:", res);
+        throw new Error("Failed to retrieve item ID");
+      }
+
+      console.log("✅ Item created successfully:", itemId);
+      return itemId;
+
     } catch (err) {
       if (err.response && err.response.status === 429) {
-        console.log(`Rate limit hit. Retrying in ${delay / 1000}s...`);
+        console.warn(`Rate limit hit. Retrying in ${delay / 1000}s...`);
         await new Promise((resolve) => setTimeout(resolve, delay));
-        delay *= 2; // exponential backoff
+        delay *= 2;
         retries--;
       } else {
-        console.error(
-          "Error creating item:",
-          err.response?.data || err.message
-        );
+        console.error("❌ Error creating item:", err.response?.data || err.message);
         break;
       }
     }
   }
-  return null;
+
+  throw new Error("Failed to create item after multiple retries");
 }
+
+
 async function createSubitemMutationProcurement(
-  itemId,
-  subitemName,
-  subLevelColumnId,
-  groupName,
-  subUnitColumnId,
-  parentName,
-  subitemQuantityId,
-  subJoineryColumnId,
-  joineryName,
-  sourceSubitemColumnId,
-  subitemId,
-  sourceParentColumnId,
-  sourceParentId,
-  parentNameCol,
-  subitemNameCol,
-  BoardIdCol,
-  boardIdVal,
-  parentIdval,
-  jobCode,
-  boardName,
-  existingQuantity=1
+        itemId,//Parent Item ID
+        subItemName,//Subitem Name
+        subLevelColumnId,//level 
+        groupName,//level
+        subUnitColumnId,//Unit 
+        parentName,//unit
+        subJoineryColumnId,//Joinery
+        joineryName,//Joinery
+        sourceSubitemColumnId,//source subitem ID
+        subitemId,//source subitem ID
+        sourceParentColumnId,//source parent ID
+        sourceParentId,//source parent ID
+        sourceParentNameColumnId,//source parent name
+        sourceSubItemNameColumnId,//source subitem name 
+        sourceBoardColumnId,//source board id
+        subBoardId,//source board id
+        jobCode,
+        boardName,
+        rawMaterialConnectColumnId,//raw material tagging
+        rawItemId//raw material tagging
 ) {
   mondayClient.setToken(
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
- 
+  
   // const defaultQuantity = 0;
-  console.log(itemId, "asd");
+ // console.log(itemId, "asd");
   const mutation = `
     mutation {
       create_subitem (
         parent_item_id: ${itemId},
-        item_name: "${subitemName}",
-        column_values: ${JSON.stringify(`{"${subLevelColumnId}" : "${groupName}",
-          "${subUnitColumnId}" : "${parentName}",
-          "${parentNameCol}" : "${parentName}",
-          "${sourceParentColumnId}" : "${parentIdval}",
-          "${subitemNameCol}" : "${subitemName}",
-          "${BoardIdCol}" : "${boardIdVal}",
+        item_name: "${subItemName}",
+        column_values: ${JSON.stringify(`{
+          "${sourceSubitemColumnId}" : "${subitemId}",
+          "${sourceParentColumnId}" : "${sourceParentId}",
+          "${sourceParentNameColumnId}" : "${parentName}",
+          "${sourceSubItemNameColumnId}" : "${subItemName}",
+          "${sourceBoardColumnId}" : "${subBoardId}",
           "text_mkwt5smm" : "${jobCode || ""}",
           "text_mkwjfrjn" : "${boardName}",
-          "${subitemQuantityId}" : ${existingQuantity || 0}, "${subJoineryColumnId}" : "${joineryName}","${sourceSubitemColumnId}" : "${subitemId}","${sourceParentColumnId}" : "${sourceParentId}"}`)}, create_labels_if_missing: true
+          "${rawMaterialConnectColumnId}":{"item_ids":["${rawItemId}"]},"${subLevelColumnId}" : "${groupName}",
+          "${subUnitColumnId}" : "${parentName}",
+          "${subJoineryColumnId}" : "${joineryName}"}`)}, create_labels_if_missing: true
       ) {
         id
       }
     }
   `;
   const d = await mondayClient.api(mutation);
-  console.log(d, "ddddd", mutation, "sad");
+ console.log(d, "ddddd", mutation, "sad");
   return d;
 }
  
@@ -521,8 +529,8 @@ async function getSubItems(itemId) {
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
   // const s = JSON.stringify(`{"status": "${subitemStatus}"}`);
-  console.log(itemId, "asd");
-  const mutation = `
+  //console.log(itemId, "asd");
+  const query = `
   query{
   items(ids:"${itemId}"){
     subitems{
@@ -532,8 +540,9 @@ async function getSubItems(itemId) {
   }
 }
   `;
-  const d = await mondayClient.api(mutation);
-  console.log(d, "ddddd", mutation, "sad", d.items);
+  console.log("query", query);
+  const d = await mondayClient.api(query);
+  //console.log(d, "ddddd", mutation, "sad", d.items);
  
   return d.data.items[0].subitems;
 }
@@ -542,7 +551,7 @@ async function getSubItemsBoardId(itemId) {
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
   // const s = JSON.stringify(`{"status": "${subitemStatus}"}`);
-  console.log(itemId, "asd");
+  //console.log(itemId, "asd");
   const mutation = `
 query{
   items(ids:"${itemId}" limit:1){
@@ -557,7 +566,7 @@ query{
 }
   `;
   const d = await mondayClient.api(mutation);
-  console.log(d, "ddddd", mutation, "sad", d.items);
+  //console.log(d, "ddddd", mutation, "sad", d.items);
  
   return d.data.items[0].subitems[0].board.id;
 }
@@ -565,24 +574,23 @@ async function getColumnValue(itemId,columnId) {
   mondayClient.setToken(
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
-  console.log(itemId,columnId)
+  //console.log(itemId,columnId)
   // const s = JSON.stringify(`{"status": "${subitemStatus}"}`);
-  console.log(itemId, "asd");
+  //console.log(itemId, "asd");
   const mutation = `
- query {
-  items(ids: ${itemId}) {
-    id
-    name
-    column_values(ids: ["${columnId}"]) {
-      id
-      text
-     
-    }
-  }
-}
-  `;
+        query {
+          items(ids: ${itemId}) {
+            id
+            name
+            column_values(ids: ["${columnId}"]) {
+              id
+              text
+            
+            }
+          }
+        }`;
   const d = await mondayClient.api(mutation);
-  console.log(d, "ddddd", mutation, "sad", d?.data?.items);
+  //console.log(d, "ddddd", mutation, "sad", d?.data?.items);
  
   return d?.data?.items[0]?.column_values[0]?.text;
 }
@@ -591,7 +599,7 @@ async function getColumnValueWithName(itemId,columnId) {
     "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjU2NjAyNTkxOCwiYWFpIjoxMSwidWlkIjo3Nzg4NDU5NSwiaWFkIjoiMjAyNS0wOS0yNFQxMjo0OTowMC4wMDBaIiwicGVyIjoibWU6d3JpdGUiLCJhY3RpZCI6NDg3MTQ0MywicmduIjoidXNlMSJ9.XIF97XcTf_3x7XOGiS251ZxxPeP55Q7BaSu5IQ97fzM"
   );
   // const s = JSON.stringify(`{"status": "${subitemStatus}"}`);
-  console.log(itemId, "asd");
+  //console.log(itemId, "asd");
   const mutation = `
  query {
   items(ids: ${itemId}) {
@@ -606,7 +614,7 @@ async function getColumnValueWithName(itemId,columnId) {
 }
   `;
   const d = await mondayClient.api(mutation);
-  console.log(d, "ddddd", mutation, "sad", d?.data?.items);
+  //console.log(d, "ddddd", mutation, "sad", d?.data?.items);
  
   return d?.data?.items[0]?.name;
 }
@@ -644,8 +652,8 @@ const getSpecificItemUsingColumnValue = async (
  
     const response = await monday.api(query);
     console.log(query, "asd");
-    console.log(response, "asmaskdmasodinasiudnqw2");
-    return response?.data?.items_page_by_column_values.items[0];
+    //console.log(response, "asmaskdmasodinasiudnqw2");
+    return response?.data?.items_page_by_column_values.items[0].id;
   } catch (err) {
     console.error("Error getting user metadata:", err);
     throw err;
@@ -675,8 +683,8 @@ const checkItemsExistsorNot = async (boardId, itemName) => {
       }`;
  
       const response = await monday.api(query);
-      console.log(query,"queryyyeryyer")
-      console.log(response?.data,"= response?.data?.items_page_by_column_values")
+      //console.log(query,"queryyyeryyer")
+      //console.log(response?.data,"= response?.data?.items_page_by_column_values")
       const pageData = response?.data?.items_page_by_column_values?.items[0]?.id;
  
     //   if (!pageData) break;
@@ -702,7 +710,7 @@ const checkItemsExistsorNot = async (boardId, itemName) => {
 };
  
 async function UpdateSubitemQuantity(boardId, itemId, quantity=0,subLevelColumnId,groupName,subJoineryColumnId,parentName,subQuantityColumnId) {
-  console.log(quantity,"uqnwqeq")
+  //console.log(quantity,"uqnwqeq")
   const level = await getProcurementSubitemDetails(itemId, subLevelColumnId);
   const joineryType = await getProcurementSubitemDetails(itemId, subJoineryColumnId);
  
@@ -718,7 +726,7 @@ async function UpdateSubitemQuantity(boardId, itemId, quantity=0,subLevelColumnI
   }
 }
   `;
-  console.log(query, "query");
+  //console.log(query, "query");
  
   try {
         const monday = initMondayClient();
@@ -727,7 +735,7 @@ async function UpdateSubitemQuantity(boardId, itemId, quantity=0,subLevelColumnI
  
     const response = await monday.api(query);
  
-    console.log("✅ Updated:", response.data);
+    //console.log("✅ Updated:", response.data);
     return response.data;
   } catch (err) {
     console.error(
@@ -753,9 +761,9 @@ const getProcurementSubitemDetails = async (subitemId, columnId) => {
           }
         }`;
  
-    console.log("Query", query);
+    //console.log("Query", query);
     const res = await mondayClient.api(query);
-    console.log(res.data?.items[0]?.column_values, "res");
+    //console.log(res.data?.items[0]?.column_values, "res");
     return res?.data?.items[0]?.column_values[0]?.text;
   } catch (err) {
     console.error("Error in getSubitemDetails:", err);
